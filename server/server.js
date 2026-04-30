@@ -32,6 +32,10 @@ if (process.env.NODE_ENV !== 'production') {
 // Mount routers
 app.use('/api/health', healthRoutes);
 app.use('/api/auth', authRoutes);
+const rideRoutes = require('./routes/rides');
+app.use('/api/rides', rideRoutes);
+const bookingRoutes = require('./routes/bookings');
+app.use('/api/bookings', bookingRoutes);
 
 // Error handling middleware
 app.use(errorHandler);

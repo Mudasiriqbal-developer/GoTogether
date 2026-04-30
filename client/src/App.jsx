@@ -16,6 +16,9 @@ import SearchRides from './pages/SearchRides';
 import RideDetail from './pages/RideDetail';
 import Bookings from './pages/Bookings';
 import Profile from './pages/Profile';
+import MyRides from './pages/MyRides';
+import MyBookings from './pages/MyBookings';
+import RideRequests from './pages/RideRequests';
 
 function App() {
   return (
@@ -39,6 +42,9 @@ function App() {
               <Route path="/post-ride" element={<PrivateRoute><PostRide /></PrivateRoute>} />
               <Route path="/bookings" element={<PrivateRoute><Bookings /></PrivateRoute>} />
               <Route path="/profile" element={<PrivateRoute><Profile /></PrivateRoute>} />
+              <Route path="/my-rides" element={<PrivateRoute><MyRides /></PrivateRoute>} />
+              <Route path="/my-bookings" element={<PrivateRoute><MyBookings /></PrivateRoute>} />
+              <Route path="/ride-requests" element={<PrivateRoute><RideRequests /></PrivateRoute>} />
             </Routes>
           </main>
           
