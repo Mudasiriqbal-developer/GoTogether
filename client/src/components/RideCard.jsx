@@ -37,7 +37,14 @@ function RideCard({ ride }) {
               </div>
             )}
             <div className="text-sm">
-              <p className="font-medium text-gray-900 dark:text-gray-100">{ride.driver.name}</p>
+              <p className="font-medium text-gray-900 dark:text-gray-100 flex items-center gap-1">
+                <Link to={`/user/${ride.driver._id}`} className="hover:underline">{ride.driver.name}</Link>
+                {ride.driver.avgRating >= 4 && ride.driver.totalRatings >= 3 && (
+                  <span className="bg-blue-100 text-blue-800 text-[10px] font-bold px-1.5 py-0.5 rounded" title="Verified Driver">
+                    ✓ Verified
+                  </span>
+                )}
+              </p>
               <p className="text-gray-500 dark:text-gray-400 text-xs">
                 ★ {ride.driver.avgRating?.toFixed(1) || 'New'} ({ride.driver.totalRatings || 0})
               </p>

@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import api from '../utils/api';
 import { useAuth } from '../context/AuthContext';
+import ReportModal from '../components/ReportModal';
+import toast from 'react-hot-toast';
 
 function RideDetail() {
   const { id } = useParams();
@@ -11,6 +13,7 @@ function RideDetail() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [bookingStatus, setBookingStatus] = useState('');
+  const [isReportModalOpen, setIsReportModalOpen] = useState(false);
 
   const [seatsToBook, setSeatsToBook] = useState(1);
 
@@ -38,13 +41,28 @@ function RideDetail() {
     try {
       await api.post('/bookings', { rideId: id, seatsBooked: seatsToBook });
       setBookingStatus({ type: 'success', msg: 'Booking requested successfully! Waiting for driver approval.' });
-      
-      // Update local ride seats count dynamically
-      // Wait, actual decrement happens on approval per requirements, so we shouldn't decrement locally yet.
-      // But we can refresh the ride data if we wanted.
+      toast.success('Booking request sent!');
     } catch (err) {
       setBookingStatus({ type: 'error', msg: err.response?.data?.error || 'Failed to request booking.' });
+      toast.error(err.response?.data?.error || 'Failed to request booking');
     }
+  };
+
+  const handleWhatsAppContact = () => {
+    if (!ride?.driver?.phone) {
+      toast.error('Driver phone number not available');
+      return;
+    }
+    
+    // Format phone number for WhatsApp (remove special characters, add country code if needed)
+    let phoneNumber = ride.driver.phone.replace(/\D/g, '');
+    // If number doesn't start with country code, assume Pakistan (+92)
+    if (!phoneNumber.startsWith('92')) {
+      phoneNumber = '92' + phoneNumber.replace(/^0+/, '');
+    }
+    
+    const whatsappUrl = `https://wa.me/${phoneNumber}`;
+    window.open(whatsappUrl, '_blank');
   };
 
   if (loading) {
@@ -138,30 +156,43 @@ function RideDetail() {
           </div>
 
           <div>
-            <h3 className="text-lg font-bold mb-4 text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-700 pb-2">Driver Information</h3>
+            <div className="flex justify-between items-center mb-4 border-b border-gray-200 dark:border-gray-700 pb-2">
+              <h3 className="text-lg font-bold text-gray-900 dark:text-white">Driver Information</h3>
+              {isAuthenticated && user?._id !== ride.driver?._id && (
+                <button 
+                  onClick={() => setIsReportModalOpen(true)}
+                  className="text-xs text-red-500 hover:text-red-700 underline"
+                >
+                  Report
+                </button>
+              )}
+            </div>
             {ride.driver ? (
-              <div className="bg-gray-50 dark:bg-gray-700 p-5 rounded-xl flex items-center gap-4">
-                {ride.driver.profilePhoto && ride.driver.profilePhoto !== 'default.jpg' ? (
-                  <img src={ride.driver.profilePhoto} alt={ride.driver.name} className="w-16 h-16 rounded-full object-cover border-2 border-white shadow-sm" />
-                ) : (
-                  <div className="w-16 h-16 rounded-full bg-blue-100 flex items-center justify-center text-2xl font-bold text-blue-600 border-2 border-white shadow-sm">
-                    {ride.driver.name.charAt(0)}
-                  </div>
-                )}
-                <div>
-                  <p className="font-bold text-lg text-gray-900 dark:text-white">{ride.driver.name}</p>
-                  <div className="flex items-center text-yellow-500 text-sm mt-1">
-                    {'★'.repeat(Math.round(ride.driver.avgRating || 0))}
-                    {'☆'.repeat(5 - Math.round(ride.driver.avgRating || 0))}
-                    <span className="text-gray-500 ml-2">({ride.driver.totalRatings || 0} reviews)</span>
-                  </div>
-                  {isAuthenticated && (
-                    <p className="text-sm text-gray-600 dark:text-gray-400 mt-2 flex items-center gap-1">
-                      <span className="font-medium text-xs bg-gray-200 dark:bg-gray-600 px-2 py-0.5 rounded">Contact</span> 
-                      {ride.driver.phone || 'N/A'}
-                    </p>
+              <div className="bg-gray-50 dark:bg-gray-700 p-5 rounded-xl">
+                <div className="flex items-center gap-4 mb-4">
+                  {ride.driver.profilePhoto && ride.driver.profilePhoto !== 'default.jpg' ? (
+                    <img src={ride.driver.profilePhoto} alt={ride.driver.name} className="w-16 h-16 rounded-full object-cover border-2 border-white shadow-sm" />
+                  ) : (
+                    <div className="w-16 h-16 rounded-full bg-blue-100 flex items-center justify-center text-2xl font-bold text-blue-600 border-2 border-white shadow-sm">
+                      {ride.driver.name.charAt(0)}
+                    </div>
                   )}
+                  <div>
+                    <p className="font-bold text-lg text-gray-900 dark:text-white">{ride.driver.name}</p>
+                    <div className="flex items-center text-yellow-500 text-sm mt-1">
+                      {'★'.repeat(Math.round(ride.driver.avgRating || 0))}
+                      {'☆'.repeat(5 - Math.round(ride.driver.avgRating || 0))}
+                      <span className="text-gray-500 ml-2">({ride.driver.totalRatings || 0} reviews)</span>
+                    </div>
+                  </div>
                 </div>
+                
+                <button
+                  onClick={handleWhatsAppContact}
+                  className="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg transition flex items-center justify-center gap-2"
+                >
+                  <span>💬</span> Contact via WhatsApp
+                </button>
               </div>
             ) : (
               <p className="text-gray-500 italic">Driver information unavailable</p>
@@ -195,6 +226,15 @@ function RideDetail() {
           </button>
         </div>
       </div>
+      
+      {ride?.driver && (
+        <ReportModal 
+          isOpen={isReportModalOpen} 
+          onClose={() => setIsReportModalOpen(false)} 
+          reportedUserId={ride.driver._id} 
+          rideId={ride._id} 
+        />
+      )}
     </div>
   );
 }

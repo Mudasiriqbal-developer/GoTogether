@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import api from '../utils/api';
+import RatingModal from '../components/RatingModal';
 
 function MyBookings() {
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  
+  const [isRatingModalOpen, setIsRatingModalOpen] = useState(false);
+  const [ratingData, setRatingData] = useState(null);
 
   const fetchBookings = async () => {
     try {
@@ -41,6 +45,21 @@ function MyBookings() {
       case 'cancelled': return <span className="bg-gray-100 text-gray-800 px-3 py-1 rounded-full text-xs font-bold uppercase">Cancelled</span>;
       default: return null;
     }
+  };
+
+  const openRatingModal = (booking) => {
+    setRatingData({
+      revieweeId: booking.ride.driver._id,
+      rideId: booking.ride._id,
+      bookingId: booking._id
+    });
+    setIsRatingModalOpen(true);
+  };
+
+  const canLeaveReview = (booking) => {
+    if (booking.status !== 'approved' || !booking.ride) return false;
+    const rideDate = new Date(`${booking.ride.date.split('T')[0]}T${booking.ride.time}`);
+    return new Date() > rideDate;
   };
 
   if (loading) {
@@ -113,7 +132,7 @@ function MyBookings() {
                       View Ride
                     </Link>
                   )}
-                  {['pending', 'approved'].includes(booking.status) && (
+                  {['pending', 'approved'].includes(booking.status) && !canLeaveReview(booking) && (
                     <button 
                       onClick={() => handleCancel(booking._id)}
                       className="flex-1 md:flex-none bg-red-50 text-red-600 hover:bg-red-100 dark:bg-red-900/30 dark:hover:bg-red-900/50 px-4 py-2 rounded-lg font-medium text-sm transition-colors"
@@ -121,11 +140,38 @@ function MyBookings() {
                       Cancel
                     </button>
                   )}
+                  {canLeaveReview(booking) && (
+                    <button 
+                      onClick={() => openRatingModal(booking)}
+                      className="flex-1 md:flex-none bg-yellow-50 text-yellow-600 hover:bg-yellow-100 dark:bg-yellow-900/30 dark:hover:bg-yellow-900/50 px-4 py-2 rounded-lg font-medium text-sm transition-colors"
+                    >
+                      Leave Review
+                    </button>
+                  )}
                 </div>
               </div>
             );
           })}
         </div>
+      )}
+      
+      {ratingData && (
+        <RatingModal 
+          isOpen={isRatingModalOpen}
+          onClose={() => {
+            setIsRatingModalOpen(false);
+            setRatingData(null);
+          }}
+          revieweeId={ratingData.revieweeId}
+          rideId={ratingData.rideId}
+          bookingId={ratingData.bookingId}
+          onRatingSubmitted={() => {
+            alert('Review submitted successfully!');
+            // Ideally we'd mark this booking as reviewed in state so the button disappears,
+            // but for simplicity, we'll let the backend catch duplicate review attempts
+            // or we could refresh bookings if we added a `hasReviewed` field.
+          }}
+        />
       )}
     </div>
   );

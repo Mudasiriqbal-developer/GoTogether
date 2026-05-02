@@ -1,0 +1,9 @@
+const express = require('express');
+const { createRating, getUserRatings } = require('../controllers/ratingController');
+const router = express.Router();
+const { protect } = require('../middleware/authMiddleware');
+
+router.post('/', protect, createRating);
+router.get('/user/:userId', getUserRatings);
+
+module.exports = router;

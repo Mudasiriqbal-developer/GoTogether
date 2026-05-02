@@ -36,6 +36,14 @@ const rideRoutes = require('./routes/rides');
 app.use('/api/rides', rideRoutes);
 const bookingRoutes = require('./routes/bookings');
 app.use('/api/bookings', bookingRoutes);
+const ratingRoutes = require('./routes/ratings');
+app.use('/api/ratings', ratingRoutes);
+const reportRoutes = require('./routes/reports');
+app.use('/api/reports', reportRoutes);
+const userRoutes = require('./routes/users');
+app.use('/api/users', userRoutes);
+const dashboardRoutes = require('./routes/dashboard');
+app.use('/api/dashboard', dashboardRoutes);
 
 // Error handling middleware
 app.use(errorHandler);

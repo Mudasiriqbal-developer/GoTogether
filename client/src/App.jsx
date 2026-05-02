@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Toaster } from 'react-hot-toast';
 import { AuthProvider } from './context/AuthContext';
 
 // Components
@@ -14,11 +15,13 @@ import Dashboard from './pages/Dashboard';
 import PostRide from './pages/PostRide';
 import SearchRides from './pages/SearchRides';
 import RideDetail from './pages/RideDetail';
+import UserProfile from './pages/UserProfile';
 import Bookings from './pages/Bookings';
 import Profile from './pages/Profile';
 import MyRides from './pages/MyRides';
 import MyBookings from './pages/MyBookings';
 import RideRequests from './pages/RideRequests';
+import NotFound from './pages/NotFound';
 
 function App() {
   return (
@@ -36,6 +39,7 @@ function App() {
               <Route path="/register" element={<Register />} />
               <Route path="/search" element={<SearchRides />} />
               <Route path="/ride/:id" element={<RideDetail />} />
+              <Route path="/user/:id" element={<UserProfile />} />
 
               {/* Protected Routes */}
               <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
@@ -45,6 +49,9 @@ function App() {
               <Route path="/my-rides" element={<PrivateRoute><MyRides /></PrivateRoute>} />
               <Route path="/my-bookings" element={<PrivateRoute><MyBookings /></PrivateRoute>} />
               <Route path="/ride-requests" element={<PrivateRoute><RideRequests /></PrivateRoute>} />
+
+              {/* 404 Not Found */}
+              <Route path="*" element={<NotFound />} />
             </Routes>
           </main>
           
@@ -53,6 +60,9 @@ function App() {
             <p>&copy; {new Date().getFullYear()} RideShare PK. All rights reserved.</p>
           </footer>
         </div>
+
+        {/* Toast Notifications */}
+        <Toaster position="top-right" reverseOrder={false} />
       </Router>
     </AuthProvider>
   );
