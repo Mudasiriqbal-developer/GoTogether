@@ -1,8 +1,8 @@
+const dotenv = require('dotenv');
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
-const dotenv = require('dotenv');
 const mongoose = require('mongoose');
 
 const { errorHandler } = require('./middleware/errorHandler');
@@ -64,5 +64,6 @@ const connectDB = async () => {
     process.exit(1);
   }
 };
+
 
 connectDB();

@@ -1,10 +1,44 @@
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 const { validationResult } = require('express-validator');
+const { sendEmailAsync } = require('../utils/emailService');
+const { registrationWelcomeEmail } = require('../utils/registrationEmailTemplate');
 
 // Get token from model, create cookie and send response
+// const sendTokenResponse = (user, statusCode, res) => {
+//   // Create token
+//   const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+//     expiresIn: '30d',
+//   });
+
+//   res.status(statusCode).json({
+//     success: true,
+//     token,
+//     user: {
+//       _id: user._id,
+//       name: user.name,
+//       email: user.email,
+//       phone: user.phone,
+//       role: user.role,
+//       profilePhoto: user.profilePhoto,
+//       avgRating: user.avgRating,
+//       isVerified: user.isVerified
+//     }
+//   });
+// };
+
+// @desc    Register user
+// @route   POST /api/auth/register
+// @access  Public
+
 const sendTokenResponse = (user, statusCode, res) => {
-  // Create token
+  if (!process.env.JWT_SECRET) {
+    return res.status(500).json({
+      success: false,
+      error: "JWT_SECRET is not configured"
+    });
+  }
+
   const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
     expiresIn: '30d',
   });
@@ -25,9 +59,6 @@ const sendTokenResponse = (user, statusCode, res) => {
   });
 };
 
-// @desc    Register user
-// @route   POST /api/auth/register
-// @access  Public
 exports.registerUser = async (req, res, next) => {
   try {
     // Check validation errors
@@ -45,7 +76,7 @@ exports.registerUser = async (req, res, next) => {
       return res.status(400).json({ success: false, error: 'User already exists' });
     }
 
-    // Create user
+    // Create user (password is automatically hashed by User model's pre-save hook)
     user = await User.create({
       name,
       email,
@@ -54,6 +85,16 @@ exports.registerUser = async (req, res, next) => {
       role,
     });
 
+    // Send welcome email asynchronously (fire and forget - non-blocking)
+    // This won't delay the API response or crash if email fails
+    const welcomeEmail = registrationWelcomeEmail(user.name);
+    sendEmailAsync(
+      user.email,
+      'Welcome to RideShare PK! 🚗',
+      welcomeEmail
+    );
+
+    // Always return success to client, regardless of email status
     sendTokenResponse(user, 201, res);
   } catch (err) {
     next(err);
@@ -73,7 +114,12 @@ exports.loginUser = async (req, res, next) => {
 
     const { email, password } = req.body;
 
-    // Check for user
+    // Validate email & password
+    if (!email || !password) {
+      return res.status(400).json({ success: false, error: 'Please provide an email and password' });
+    }
+
+    // Check for user (include password field which is normally excluded)
     const user = await User.findOne({ email }).select('+password');
 
     if (!user) {
@@ -109,3 +155,6 @@ exports.getMe = async (req, res, next) => {
     next(err);
   }
 };
+
+
+console.log("JWT_SECRET:", process.env.JWT_SECRET);

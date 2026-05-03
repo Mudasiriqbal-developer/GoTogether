@@ -1,7 +1,7 @@
 const Booking = require('../models/Booking');
 const Ride = require('../models/Ride');
 const User = require('../models/User');
-const { sendEmail } = require('../utils/emailService');
+const { sendEmailAsync } = require('../utils/emailService');
 const { newBookingRequestEmail } = require('../utils/bookingEmailTemplate');
 
 // @desc    Create new booking
@@ -45,19 +45,17 @@ exports.createBooking = async (req, res, next) => {
     });
 
     // Send email to driver about new booking request
-    if (process.env.GMAIL_EMAIL && process.env.GMAIL_APP_PASSWORD) {
-      const emailHtml = newBookingRequestEmail(
-        ride.driver.name,
-        passenger.name,
-        { origin: ride.origin, destination: ride.destination, date: ride.date, time: ride.time },
-        seatsBooked
-      );
-      await sendEmail(
-        ride.driver.email,
-        `New Booking Request - ${ride.origin} to ${ride.destination}`,
-        emailHtml
-      );
-    }
+    const emailHtml = newBookingRequestEmail(
+      ride.driver.name,
+      passenger.name,
+      { origin: ride.origin, destination: ride.destination, date: ride.date, time: ride.time },
+      seatsBooked
+    );
+    sendEmailAsync(
+      ride.driver.email,
+      `New Booking Request - ${ride.origin} to ${ride.destination}`,
+      emailHtml
+    );
 
     res.status(201).json({
       success: true,
@@ -160,20 +158,18 @@ exports.approveBooking = async (req, res, next) => {
     await ride.save();
 
     // Send confirmation email to passenger
-    if (process.env.GMAIL_EMAIL && process.env.GMAIL_APP_PASSWORD) {
-      const { bookingConfirmationEmail } = require('../utils/emailTemplates');
-      const driver = await User.findById(booking.ride.driver);
-      const emailHtml = bookingConfirmationEmail(
-        booking.passenger.name,
-        driver.name,
-        { origin: booking.ride.origin, destination: booking.ride.destination, date: booking.ride.date, time: booking.ride.time }
-      );
-      await sendEmail(
-        booking.passenger.email,
-        `Booking Confirmed - ${booking.ride.origin} to ${booking.ride.destination}`,
-        emailHtml
-      );
-    }
+    const { bookingConfirmationEmail } = require('../utils/emailTemplates');
+    const driver = await User.findById(booking.ride.driver);
+    const emailHtml = bookingConfirmationEmail(
+      booking.passenger.name,
+      driver.name,
+      { origin: booking.ride.origin, destination: booking.ride.destination, date: booking.ride.date, time: booking.ride.time }
+    );
+    sendEmailAsync(
+      booking.passenger.email,
+      `Booking Confirmed - ${booking.ride.origin} to ${booking.ride.destination}`,
+      emailHtml
+    );
 
     res.status(200).json({
       success: true,
