@@ -32,31 +32,45 @@ const { registrationWelcomeEmail } = require('../utils/registrationEmailTemplate
 // @access  Public
 
 const sendTokenResponse = (user, statusCode, res) => {
-  if (!process.env.JWT_SECRET) {
+  const jwtSecret = process.env.JWT_SECRET;
+  console.log('[sendTokenResponse] JWT_SECRET value:', jwtSecret);
+  console.log('[sendTokenResponse] JWT_SECRET is empty?:', !jwtSecret);
+  console.log('[sendTokenResponse] Process env keys:', Object.keys(process.env).filter(k => k.includes('JWT') || k.includes('MONGO') || k.includes('PORT')));
+  
+  if (!jwtSecret) {
+    console.error('[sendTokenResponse] CRITICAL: JWT_SECRET is not configured');
     return res.status(500).json({
       success: false,
       error: "JWT_SECRET is not configured"
     });
   }
 
-  const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-    expiresIn: '30d',
-  });
+  try {
+    const token = jwt.sign({ id: user._id }, jwtSecret, {
+      expiresIn: '30d',
+    });
 
-  res.status(statusCode).json({
-    success: true,
-    token,
-    user: {
-      _id: user._id,
-      name: user.name,
-      email: user.email,
-      phone: user.phone,
-      role: user.role,
-      profilePhoto: user.profilePhoto,
-      avgRating: user.avgRating,
-      isVerified: user.isVerified
-    }
-  });
+    res.status(statusCode).json({
+      success: true,
+      token,
+      user: {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        phone: user.phone,
+        role: user.role,
+        profilePhoto: user.profilePhoto,
+        avgRating: user.avgRating,
+        isVerified: user.isVerified
+      }
+    });
+  } catch (error) {
+    console.error('[sendTokenResponse] Error signing JWT:', error.message);
+    res.status(500).json({
+      success: false,
+      error: error.message
+    });
+  }
 };
 
 exports.registerUser = async (req, res, next) => {
@@ -155,6 +169,3 @@ exports.getMe = async (req, res, next) => {
     next(err);
   }
 };
-
-
-console.log("JWT_SECRET:", process.env.JWT_SECRET);

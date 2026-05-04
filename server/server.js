@@ -1,16 +1,21 @@
+console.log('[server.js:start] Starting server initialization...');
+
 const dotenv = require('dotenv');
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
+const jwt = require('jsonwebtoken');
+// Load env vars FIRST before importing routes
+dotenv.config();
+
+console.log('[server.js:after-dotenv] JWT_SECRET loaded:', process.env.JWT_SECRET ? 'YES' : 'NO');
+console.log('[server.js:after-dotenv] MONGO_URI loaded:', process.env.MONGO_URI ? 'YES' : 'NO');
 
 const { errorHandler } = require('./middleware/errorHandler');
 const healthRoutes = require('./routes/health');
 const authRoutes = require('./routes/auth');
-
-// Load env vars
-dotenv.config();
 
 const app = express();
 
