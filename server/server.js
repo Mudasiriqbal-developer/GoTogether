@@ -49,9 +49,10 @@ const userRoutes = require('./routes/users');
 app.use('/api/users', userRoutes);
 const dashboardRoutes = require('./routes/dashboard');
 app.use('/api/dashboard', dashboardRoutes);
+const uploadRoutes = require('./routes/upload');
+app.use('/api/upload', uploadRoutes);
 
 // Error handling middleware
-app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
 
@@ -71,4 +72,5 @@ const connectDB = async () => {
 };
 
 
+app.use(errorHandler);
 connectDB();

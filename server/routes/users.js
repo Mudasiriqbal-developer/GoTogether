@@ -27,7 +27,7 @@ router.get('/:id', async (req, res) => {
 // @desc    Upload user profile photo
 // @route   PUT /api/users/upload-photo
 // @access  Protected
-router.put('/upload-photo', protect, upload.single('profilePhoto'), async (req, res) => {
+router.put('/upload-photo', protect, upload.single('profilePhoto'), async (req, res, next) => {
   try {
     if (!req.file) {
       return res.status(400).json({ success: false, error: 'No file uploaded' });
@@ -37,7 +37,7 @@ router.put('/upload-photo', protect, upload.single('profilePhoto'), async (req, 
     if (!user) {
       return res.status(404).json({ success: false, error: 'User not found' });
     }
-
+console.log("file is", req.file);
     // Upload to Cloudinary
     const result = await uploadToCloudinary(
       req.file.buffer,
@@ -55,7 +55,7 @@ router.put('/upload-photo', protect, upload.single('profilePhoto'), async (req, 
       }
     });
   } catch (err) {
-    res.status(400).json({ success: false, error: err.message });
+    next(err);
   }
 });
 
