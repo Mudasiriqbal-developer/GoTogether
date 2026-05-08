@@ -71,14 +71,14 @@ const registrationWelcomeEmail = (userName) => {
             </div>
             
             <div class="button-container">
-              <a href="https://gotogether.pk/dashboard" class="button">Go to Dashboard</a>
+              <a href="${process.env.CLIENT_URL}/dashboard" class="button">Go to Dashboard</a>
             </div>
             
             <h3>Safety & Trust:</h3>
             <p>At RideShare PK, safety is our priority. All users go through a verification process, and you can rate your experience with every ride. If you ever feel unsafe, you can report the user or ride.</p>
             
             <h3>Have Questions?</h3>
-            <p>Check out our <a href="https://gotogether.pk/help" style="color: #667eea; text-decoration: none;">Help Center</a> or reply to this email. Our support team is here to help!</p>
+            <p>Check out our <a href="${process.env.CLIENT_URL}/help" style="color: #667eea; text-decoration: none;">Help Center</a> or reply to this email. Our support team is here to help!</p>
             
             <p>Happy riding! 🚗💨</p>
             

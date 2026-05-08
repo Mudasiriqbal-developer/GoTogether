@@ -76,9 +76,18 @@ const sendEmail = async (to, subject, htmlContent) => {
  */
 const sendEmailAsync = (to, subject, htmlContent) => {
   // Fire and forget - don't await, don't block
-  sendEmail(to, subject, htmlContent).catch((err) => {
-    console.error(`❌ Async email error for ${to}:`, err.message);
-  });
+  sendEmail(to, subject, htmlContent)
+    .then((result) => {
+      if (result.success) {
+        console.log(`✅ Async email sent to ${to}: ${result.messageId}`);
+      } else {
+        console.warn(`⚠️  Async email failed for ${to}: ${result.error}`);
+      }
+    })
+    .catch((err) => {
+      // This will almost never happen since sendEmail never rejects
+      console.error(`❌ Unexpected async email error for ${to}:`, err.message);
+    });
 };
 
 module.exports = { sendEmail, sendEmailAsync };

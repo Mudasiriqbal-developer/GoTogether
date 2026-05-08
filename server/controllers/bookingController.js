@@ -2,7 +2,8 @@ const Booking = require('../models/Booking');
 const Ride = require('../models/Ride');
 const User = require('../models/User');
 const { sendEmailAsync } = require('../utils/emailService');
-const { newBookingRequestEmail } = require('../utils/bookingEmailTemplate');
+const { newBookingRequestEmail, bookingRejectionEmail, bookingCancellationEmail } = require('../utils/bookingEmailTemplate');
+const { bookingConfirmationEmail } = require('../utils/emailTemplates');
 
 // @desc    Create new booking
 // @route   POST /api/bookings
@@ -158,7 +159,6 @@ exports.approveBooking = async (req, res, next) => {
     await ride.save();
 
     // Send confirmation email to passenger
-    const { bookingConfirmationEmail } = require('../utils/emailTemplates');
     const driver = await User.findById(booking.ride.driver);
     const emailHtml = bookingConfirmationEmail(
       booking.passenger.name,
@@ -185,13 +185,19 @@ exports.approveBooking = async (req, res, next) => {
 // @access  Protected
 exports.rejectBooking = async (req, res, next) => {
   try {
-    const booking = await Booking.findById(req.params.id).populate('ride');
+    const { reason } = req.body;
+    const booking = await Booking.findById(req.params.id)
+      .populate({
+        path: 'ride',
+        populate: { path: 'driver' }
+      })
+      .populate('passenger');
 
     if (!booking) {
       return res.status(404).json({ success: false, error: 'Booking not found' });
     }
 
-    if (booking.ride.driver.toString() !== req.user.id) {
+    if (booking.ride.driver._id.toString() !== req.user.id) {
       return res.status(401).json({ success: false, error: 'Not authorized' });
     }
 
@@ -201,6 +207,24 @@ exports.rejectBooking = async (req, res, next) => {
 
     booking.status = 'rejected';
     await booking.save();
+
+    // Send rejection email to passenger
+    const emailHtml = bookingRejectionEmail(
+      booking.passenger.name,
+      booking.ride.driver.name,
+      { 
+        origin: booking.ride.origin, 
+        destination: booking.ride.destination, 
+        date: booking.ride.date, 
+        time: booking.ride.time 
+      },
+      reason || 'Your request did not match my requirements'
+    );
+    sendEmailAsync(
+      booking.passenger.email,
+      `Booking Request Rejected - ${booking.ride.origin} to ${booking.ride.destination}`,
+      emailHtml
+    );
 
     res.status(200).json({
       success: true,
@@ -216,13 +240,18 @@ exports.rejectBooking = async (req, res, next) => {
 // @access  Protected
 exports.cancelBooking = async (req, res, next) => {
   try {
-    const booking = await Booking.findById(req.params.id).populate('ride');
+    const booking = await Booking.findById(req.params.id)
+      .populate({
+        path: 'ride',
+        populate: { path: 'driver' }
+      })
+      .populate('passenger');
 
     if (!booking) {
       return res.status(404).json({ success: false, error: 'Booking not found' });
     }
 
-    if (booking.passenger.toString() !== req.user.id) {
+    if (booking.passenger._id.toString() !== req.user.id) {
       return res.status(401).json({ success: false, error: 'Not authorized' });
     }
 
@@ -239,6 +268,24 @@ exports.cancelBooking = async (req, res, next) => {
 
     booking.status = 'cancelled';
     await booking.save();
+
+    // Send cancellation email to driver
+    const emailHtml = bookingCancellationEmail(
+      booking.ride.driver.name,
+      booking.passenger.name,
+      { 
+        origin: booking.ride.origin, 
+        destination: booking.ride.destination, 
+        date: booking.ride.date, 
+        time: booking.ride.time 
+      },
+      booking.seatsBooked
+    );
+    sendEmailAsync(
+      booking.ride.driver.email,
+      `Booking Cancelled - ${booking.ride.origin} to ${booking.ride.destination}`,
+      emailHtml
+    );
 
     res.status(200).json({
       success: true,
