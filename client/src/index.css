@@ -1,29 +1,48 @@
 @import "tailwindcss";
 
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
   color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  color: #111827;
+  background-color: #F9FAFB;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  /* Custom Variables */
+  --primary: #2563EB;
+  --primary-hover: #1D4ED8;
+  --secondary: #10B981;
+  --secondary-hover: #059669;
+  --dark: #111827;
+  --bg-gray: #F9FAFB;
+  --border-gray: #E5E7EB;
+  --text-primary: #111827;
+  --text-secondary: #6B7280;
 }
 
 @theme {
-  --color-primary: #3b82f6;
-  --color-secondary: #10b981;
+  --color-primary: #2563EB;
+  --color-primary-hover: #1D4ED8;
+  --color-secondary: #10B981;
+  --color-secondary-hover: #059669;
+  --color-dark: #111827;
+  --color-bg-gray: #F9FAFB;
+  --color-border-gray: #E5E7EB;
+  --color-text-primary: #111827;
+  --color-text-secondary: #6B7280;
 }
 
 body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
+  background-color: #F9FAFB;
 }
 
 #root {
@@ -33,9 +52,13 @@ body {
   flex-direction: column;
 }
 
-@media (prefers-color-scheme: light) {
+@media (prefers-color-scheme: dark) {
   :root {
-    color: #213547;
-    background-color: #ffffff;
+    color: #F9FAFB;
+    background-color: #111827;
+  }
+  body {
+    background-color: #111827;
   }
 }
+

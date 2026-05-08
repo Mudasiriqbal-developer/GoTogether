@@ -5,6 +5,7 @@ import { AuthProvider } from './context/AuthContext';
 
 // Components
 import Navbar from './components/Navbar';
+import Footer from './components/Footer';
 import PrivateRoute from './components/PrivateRoute';
 
 // Pages
@@ -55,10 +56,7 @@ function App() {
             </Routes>
           </main>
           
-          {/* Footer */}
-          <footer className="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 py-6 text-center">
-            <p>&copy; {new Date().getFullYear()} RideShare PK. All rights reserved.</p>
-          </footer>
+          <Footer />
         </div>
 
         {/* Toast Notifications */}
