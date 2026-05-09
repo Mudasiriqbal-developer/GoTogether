@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import ThemeToggle from './ThemeToggle';
 
 function Navbar() {
   const { isAuthenticated, user, logout } = useAuth();
@@ -37,7 +38,7 @@ function Navbar() {
         </Link>
         
         {/* Desktop Menu */}
-        <div className="hidden md:flex items-center gap-10">
+        <div className="hidden md:flex items-center gap-8">
           <div className="flex items-center gap-8">
             <NavLink to="/" label="Home" />
             <NavLink to="/search" label="Find Ride" />
@@ -45,6 +46,8 @@ function Navbar() {
           </div>
           
           <div className="h-6 w-px bg-gray-100 dark:bg-gray-800"></div>
+
+          <ThemeToggle />
 
           {isAuthenticated ? (
             <div className="flex items-center gap-6">
@@ -101,7 +104,14 @@ function Navbar() {
           <Link to="/" onClick={() => setIsMenuOpen(false)} className="text-lg font-bold text-gray-900 dark:text-white py-2">Home</Link>
           <Link to="/search" onClick={() => setIsMenuOpen(false)} className="text-lg font-bold text-gray-900 dark:text-white py-2">Find Ride</Link>
           <Link to="/post-ride" onClick={() => setIsMenuOpen(false)} className="text-lg font-bold text-gray-900 dark:text-white py-2">Offer Ride</Link>
+          
           <div className="h-px bg-gray-100 dark:bg-gray-800 my-2"></div>
+          
+          <div className="py-2">
+            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-3">Appearance</p>
+            <ThemeToggle />
+          </div>
+
           {isAuthenticated ? (
             <>
               <Link to="/dashboard" onClick={() => setIsMenuOpen(false)} className="text-lg font-bold text-gray-900 dark:text-white py-2">Dashboard</Link>
@@ -134,4 +144,3 @@ const DropdownLink = ({ to, label, icon }) => (
 );
 
 export default Navbar;
-

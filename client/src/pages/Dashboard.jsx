@@ -38,7 +38,7 @@ function Dashboard() {
   if (loading) {
     return (
       <div className="flex justify-center items-center h-[60vh]">
-        <div className="w-12 h-12 border-4 border-black/10 border-t-black rounded-full animate-spin"></div>
+        <div className="w-12 h-12 border-4 border-gray-200 dark:border-gray-800 border-t-blue-600 rounded-full animate-spin"></div>
       </div>
     );
   }
@@ -145,9 +145,9 @@ function Dashboard() {
 // Minimal Components
 const StatCard = ({ label, value, unit, isCurrency }) => (
   <div className="bg-white dark:bg-[#151921] p-8 rounded-3xl border border-gray-100 dark:border-gray-800 shadow-sm hover:shadow-xl transition-all">
-    <p className="text-xs font-black text-gray-400 uppercase tracking-widest mb-4">{label}</p>
+    <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-4">{label}</p>
     <div className="flex items-baseline gap-2">
-      <span className="text-4xl font-black text-gray-900 dark:text-white tracking-tighter">
+      <span className="text-4xl font-black text-gray-900 dark:text-white tracking-tighter transition-none">
         {isCurrency ? value?.toLocaleString() : value}
       </span>
       <span className="text-sm font-bold text-gray-400">{unit}</span>

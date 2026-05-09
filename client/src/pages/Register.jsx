@@ -35,7 +35,7 @@ function Register() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#0B0E14] py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-black py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden transition-colors duration-300">
       
       {/* Decorative background glow */}
       <div className="absolute top-0 -left-20 w-96 h-96 bg-blue-600/10 rounded-full blur-[120px]"></div>
@@ -48,14 +48,14 @@ function Register() {
               <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-600/20">
                 <span className="text-white font-black text-xl italic">R</span>
               </div>
-              <span className="text-2xl font-black text-white tracking-tight italic">RideToShare</span>
+              <span className="text-2xl font-black text-gray-900 dark:text-white tracking-tight italic">RideToShare</span>
             </div>
           </Link>
-          <h2 className="text-3xl font-black text-white tracking-tight">Create your account</h2>
+          <h2 className="text-3xl font-black text-gray-900 dark:text-white tracking-tight">Create your account</h2>
           <p className="mt-2 text-gray-500 font-medium">Join our community and start sharing journeys today.</p>
         </div>
 
-        <div className="bg-[#151921] border border-gray-800 rounded-[2.5rem] shadow-2xl p-8 md:p-12">
+        <div className="bg-white dark:bg-[#111827] border border-gray-100 dark:border-gray-800 rounded-[2.5rem] shadow-2xl p-8 md:p-12 transition-colors duration-300">
           
           {authError && (
             <div className="bg-red-500/10 border border-red-500/20 text-red-500 px-4 py-3 rounded-2xl mb-8 text-sm font-bold text-center">
@@ -70,7 +70,7 @@ function Register() {
                 <label className="block text-xs font-black text-gray-400 uppercase tracking-widest mb-2 ml-1">Full Name</label>
                 <input
                   {...registerForm('name', { required: 'Name is required' })}
-                  className={`block w-full px-5 py-4 bg-[#1C222D] border ${errors.name ? 'border-red-500' : 'border-gray-800'} rounded-2xl text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all font-medium`}
+                  className={`block w-full px-5 py-4 bg-gray-50 dark:bg-[#1C222D] border ${errors.name ? 'border-red-500' : 'border-gray-100 dark:border-gray-800'} rounded-2xl text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all font-medium`}
                   placeholder="John Doe"
                 />
                 {errors.name && <p className="text-red-500 text-[10px] font-bold uppercase tracking-widest mt-2 ml-1">{errors.name.message}</p>}
@@ -80,7 +80,7 @@ function Register() {
                 <label className="block text-xs font-black text-gray-400 uppercase tracking-widest mb-2 ml-1">Email Address</label>
                 <input
                   {...registerForm('email', { required: 'Email is required', pattern: { value: /^\S+@\S+$/i, message: 'Invalid email' } })}
-                  className={`block w-full px-5 py-4 bg-[#1C222D] border ${errors.email ? 'border-red-500' : 'border-gray-800'} rounded-2xl text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all font-medium`}
+                  className={`block w-full px-5 py-4 bg-gray-50 dark:bg-[#1C222D] border ${errors.email ? 'border-red-500' : 'border-gray-100 dark:border-gray-800'} rounded-2xl text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all font-medium`}
                   placeholder="name@example.com"
                 />
                 {errors.email && <p className="text-red-500 text-[10px] font-bold uppercase tracking-widest mt-2 ml-1">{errors.email.message}</p>}
@@ -92,7 +92,7 @@ function Register() {
                 <label className="block text-xs font-black text-gray-400 uppercase tracking-widest mb-2 ml-1">Phone Number</label>
                 <input
                   {...registerForm('phone', { required: 'Phone is required' })}
-                  className={`block w-full px-5 py-4 bg-[#1C222D] border ${errors.phone ? 'border-red-500' : 'border-gray-800'} rounded-2xl text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all font-medium`}
+                  className={`block w-full px-5 py-4 bg-gray-50 dark:bg-[#1C222D] border ${errors.phone ? 'border-red-500' : 'border-gray-100 dark:border-gray-800'} rounded-2xl text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all font-medium`}
                   placeholder="+92 300 0000000"
                 />
                 {errors.phone && <p className="text-red-500 text-[10px] font-bold uppercase tracking-widest mt-2 ml-1">{errors.phone.message}</p>}
@@ -100,14 +100,14 @@ function Register() {
 
               <div>
                 <label className="block text-xs font-black text-gray-400 uppercase tracking-widest mb-2 ml-1">I am a...</label>
-                <div className="flex p-1 bg-[#1C222D] rounded-2xl border border-gray-800">
+                <div className="flex p-1 bg-gray-50 dark:bg-[#1C222D] rounded-2xl border border-gray-100 dark:border-gray-800">
                   {['Passenger', 'Driver', 'Both'].map((r) => (
                     <button
                       type="button"
                       key={r}
                       onClick={() => handleRole(r)}
                       className={`flex-1 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${
-                        role === r ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20' : 'text-gray-500 hover:text-gray-300'
+                        role === r ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20' : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'
                       }`}
                     >
                       {r}
@@ -124,7 +124,7 @@ function Register() {
                 <input
                   {...registerForm('password', { required: 'Required', minLength: { value: 6, message: 'Min 6 chars' } })}
                   type="password"
-                  className={`block w-full px-5 py-4 bg-[#1C222D] border ${errors.password ? 'border-red-500' : 'border-gray-800'} rounded-2xl text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all font-medium`}
+                  className={`block w-full px-5 py-4 bg-gray-50 dark:bg-[#1C222D] border ${errors.password ? 'border-red-500' : 'border-gray-100 dark:border-gray-800'} rounded-2xl text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all font-medium`}
                   placeholder="••••••••"
                 />
                 {errors.password && <p className="text-red-500 text-[10px] font-bold uppercase tracking-widest mt-2 ml-1">{errors.password.message}</p>}
@@ -135,7 +135,7 @@ function Register() {
                 <input
                   {...registerForm('confirmPassword', { required: 'Required', validate: v => v === password || 'No match' })}
                   type="password"
-                  className={`block w-full px-5 py-4 bg-[#1C222D] border ${errors.confirmPassword ? 'border-red-500' : 'border-gray-800'} rounded-2xl text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all font-medium`}
+                  className={`block w-full px-5 py-4 bg-gray-50 dark:bg-[#1C222D] border ${errors.confirmPassword ? 'border-red-500' : 'border-gray-100 dark:border-gray-800'} rounded-2xl text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all font-medium`}
                   placeholder="••••••••"
                 />
                 {errors.confirmPassword && <p className="text-red-500 text-[10px] font-bold uppercase tracking-widest mt-2 ml-1">{errors.confirmPassword.message}</p>}
@@ -148,10 +148,10 @@ function Register() {
                 id="agree"
                 checked={agree}
                 onChange={e => setAgree(e.target.checked)}
-                className="w-5 h-5 rounded-lg border-gray-800 bg-[#1C222D] text-blue-600 focus:ring-offset-0 focus:ring-blue-500/50"
+                className="w-5 h-5 rounded-lg border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-[#1C222D] text-blue-600 focus:ring-offset-0 focus:ring-blue-500/50"
               />
               <label htmlFor="agree" className="text-xs text-gray-500 font-medium">
-                I agree to the <span className="text-white font-bold hover:underline cursor-pointer">Terms</span> and <span className="text-white font-bold hover:underline cursor-pointer">Privacy Policy</span>.
+                I agree to the <span className="text-gray-900 dark:text-white font-bold hover:underline cursor-pointer">Terms</span> and <span className="text-gray-900 dark:text-white font-bold hover:underline cursor-pointer">Privacy Policy</span>.
               </label>
             </div>
 
@@ -174,7 +174,7 @@ function Register() {
           <div className="mt-8 text-center">
             <p className="text-sm text-gray-500 font-medium">
               Already have an account?{' '}
-              <Link to="/login" className="text-white font-black hover:text-blue-500 transition-colors">Log in now</Link>
+              <Link to="/login" className="text-gray-900 dark:text-white font-black hover:text-blue-500 transition-colors">Log in now</Link>
             </p>
           </div>
         </div>
@@ -184,4 +184,3 @@ function Register() {
 }
 
 export default Register;
-

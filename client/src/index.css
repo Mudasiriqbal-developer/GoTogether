@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@variant dark (&:where(.dark, .dark *));
+
 :root {
   font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -7,7 +9,7 @@
 
   color-scheme: light dark;
   color: #111827;
-  background-color: #F9FAFB;
+  background-color: #FFFFFF;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -36,13 +38,28 @@
   --color-border-gray: #E5E7EB;
   --color-text-primary: #111827;
   --color-text-secondary: #6B7280;
+  
+  /* Dark Mode specific overrides if needed via classes */
+}
+
+html.dark {
+  --bg-gray: #000000;
+  --border-gray: #1F2937;
+  --text-primary: #F9FAFB;
+  --text-secondary: #9CA3AF;
 }
 
 body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
-  background-color: #F9FAFB;
+  background-color: #FFFFFF;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+html.dark body {
+  background-color: #000000;
+  color: #F9FAFB;
 }
 
 #root {
@@ -52,13 +69,8 @@ body {
   flex-direction: column;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    color: #F9FAFB;
-    background-color: #111827;
-  }
-  body {
-    background-color: #111827;
-  }
+/* Global transitions for theme switching */
+* {
+  @apply transition-colors duration-300;
 }
 

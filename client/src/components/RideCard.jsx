@@ -16,9 +16,9 @@ function RideCard({ ride }) {
         <div className="flex gap-6 items-start flex-1">
           <div className="text-center min-w-[60px]">
             <p className="text-sm font-bold text-gray-900 dark:text-white mb-1">{ride.time}</p>
-            <div className="w-0.5 h-10 bg-gray-100 dark:bg-gray-700 mx-auto my-1 relative">
-               <div className="absolute top-0 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full border-2 border-blue-600 bg-white"></div>
-               <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full bg-blue-600"></div>
+            <div className="w-0.5 h-10 bg-gray-100 dark:bg-gray-700 mx-auto my-1 relative transition-none">
+               <div className="absolute top-0 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full border-2 border-blue-600 bg-white dark:bg-gray-800 transition-none"></div>
+               <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full bg-blue-600 transition-none"></div>
             </div>
             <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{formattedDate}</p>
           </div>

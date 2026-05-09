@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { AuthProvider } from './context/AuthContext';
+import { ThemeProvider } from './context/ThemeContext';
 
 // Components
 import Navbar from './components/Navbar';
@@ -26,43 +27,45 @@ import NotFound from './pages/NotFound';
 
 function App() {
   return (
-    <AuthProvider>
-      <Router>
-        <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 flex flex-col">
-          <Navbar />
+    <ThemeProvider>
+      <AuthProvider>
+        <Router>
+          <div className="min-h-screen bg-white dark:bg-black text-gray-900 dark:text-gray-100 flex flex-col transition-colors duration-300">
+            <Navbar />
 
-          {/* Main Content Area */}
-          <main className="flex-grow container mx-auto px-4 py-8">
-            <Routes>
-              {/* Public Routes */}
-              <Route path="/" element={<Home />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />
-              <Route path="/search" element={<SearchRides />} />
-              <Route path="/ride/:id" element={<RideDetail />} />
-              <Route path="/user/:id" element={<UserProfile />} />
+            {/* Main Content Area */}
+            <main className="flex-grow container mx-auto px-4 py-8">
+              <Routes>
+                {/* Public Routes */}
+                <Route path="/" element={<Home />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
+                <Route path="/search" element={<SearchRides />} />
+                <Route path="/ride/:id" element={<RideDetail />} />
+                <Route path="/user/:id" element={<UserProfile />} />
 
-              {/* Protected Routes */}
-              <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
-              <Route path="/post-ride" element={<PrivateRoute><PostRide /></PrivateRoute>} />
-              <Route path="/bookings" element={<PrivateRoute><Bookings /></PrivateRoute>} />
-              <Route path="/profile" element={<PrivateRoute><Profile /></PrivateRoute>} />
-              <Route path="/my-rides" element={<PrivateRoute><MyRides /></PrivateRoute>} />
-              <Route path="/my-bookings" element={<PrivateRoute><MyBookings /></PrivateRoute>} />
-              <Route path="/ride-requests" element={<PrivateRoute><RideRequests /></PrivateRoute>} />
+                {/* Protected Routes */}
+                <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
+                <Route path="/post-ride" element={<PrivateRoute><PostRide /></PrivateRoute>} />
+                <Route path="/bookings" element={<PrivateRoute><Bookings /></PrivateRoute>} />
+                <Route path="/profile" element={<PrivateRoute><Profile /></PrivateRoute>} />
+                <Route path="/my-rides" element={<PrivateRoute><MyRides /></PrivateRoute>} />
+                <Route path="/my-bookings" element={<PrivateRoute><MyBookings /></PrivateRoute>} />
+                <Route path="/ride-requests" element={<PrivateRoute><RideRequests /></PrivateRoute>} />
 
-              {/* 404 Not Found */}
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </main>
-          
-          <Footer />
-        </div>
+                {/* 404 Not Found */}
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </main>
+            
+            <Footer />
+          </div>
 
-        {/* Toast Notifications */}
-        <Toaster position="top-right" reverseOrder={false} />
-      </Router>
-    </AuthProvider>
+          {/* Toast Notifications */}
+          <Toaster position="top-right" reverseOrder={false} />
+        </Router>
+      </AuthProvider>
+    </ThemeProvider>
   );
 }
 
