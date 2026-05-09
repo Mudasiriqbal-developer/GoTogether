@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import api from '../utils/api';
 import toast from 'react-hot-toast';
 
@@ -10,8 +10,18 @@ function RideRequests() {
   const [loading, setLoading] = useState(true);
   const [loadingRequests, setLoadingRequests] = useState(false);
   const [error, setError] = useState('');
+  
+  const location = useLocation();
 
   useEffect(() => {
+    // Check for messages in URL
+    const params = new URLSearchParams(location.search);
+    const msg = params.get('message');
+    const err = params.get('error');
+    
+    if (msg) toast.success(msg);
+    if (err) toast.error(err);
+
     const fetchMyRides = async () => {
       try {
         const res = await api.get('/rides/my-rides');
@@ -27,7 +37,7 @@ function RideRequests() {
     };
 
     fetchMyRides();
-  }, []);
+  }, [location]);
 
   useEffect(() => {
     if (!selectedRideId) return;

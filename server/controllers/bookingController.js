@@ -46,11 +46,14 @@ exports.createBooking = async (req, res, next) => {
     });
 
     // Send email to driver about new booking request
+    const baseUrl = process.env.SERVER_URL || `http://localhost:${process.env.PORT || 5000}`;
     const emailHtml = newBookingRequestEmail(
       ride.driver.name,
       passenger.name,
       { origin: ride.origin, destination: ride.destination, date: ride.date, time: ride.time },
-      seatsBooked
+      seatsBooked,
+      booking._id,
+      baseUrl
     );
     sendEmailAsync(
       ride.driver.email,
@@ -293,5 +296,77 @@ exports.cancelBooking = async (req, res, next) => {
     });
   } catch (err) {
     res.status(400).json({ success: false, error: err.message });
+  }
+};
+// @desc    Direct action from email (Approve/Reject)
+// @route   GET /api/bookings/:id/direct-action
+// @access  Public (Token-less for ease, but ideally should have a token)
+exports.directAction = async (req, res, next) => {
+  try {
+    const { action } = req.query;
+    const booking = await Booking.findById(req.params.id)
+      .populate({
+        path: 'ride',
+        populate: { path: 'driver' }
+      })
+      .populate('passenger');
+
+    if (!booking) {
+      return res.redirect(`${process.env.CLIENT_URL}/dashboard?error=Booking not found`);
+    }
+
+    if (booking.status !== 'pending') {
+      return res.redirect(`${process.env.CLIENT_URL}/ride-requests?message=Booking already ${booking.status}`);
+    }
+
+    if (action === 'approve') {
+      // Logic from approveBooking
+      if (booking.ride.seatsAvailable < booking.seatsBooked) {
+        return res.redirect(`${process.env.CLIENT_URL}/ride-requests?error=Not enough seats`);
+      }
+
+      booking.status = 'approved';
+      await booking.save();
+
+      const ride = await Ride.findById(booking.ride._id);
+      ride.seatsAvailable -= booking.seatsBooked;
+      await ride.save();
+
+      // Send confirmation email
+      const emailHtml = bookingConfirmationEmail(
+        booking.passenger.name,
+        booking.ride.driver.name,
+        { origin: booking.ride.origin, destination: booking.ride.destination, date: booking.ride.date, time: booking.ride.time }
+      );
+      sendEmailAsync(
+        booking.passenger.email,
+        `Booking Confirmed - ${booking.ride.origin} to ${booking.ride.destination}`,
+        emailHtml
+      );
+
+      return res.redirect(`${process.env.CLIENT_URL}/ride-requests?message=Booking approved successfully`);
+    } else if (action === 'reject') {
+      // Logic from rejectBooking
+      booking.status = 'rejected';
+      await booking.save();
+
+      const emailHtml = bookingRejectionEmail(
+        booking.passenger.name,
+        booking.ride.driver.name,
+        { origin: booking.ride.origin, destination: booking.ride.destination, date: booking.ride.date, time: booking.ride.time },
+        'Request declined via email'
+      );
+      sendEmailAsync(
+        booking.passenger.email,
+        `Booking Request Rejected - ${booking.ride.origin} to ${booking.ride.destination}`,
+        emailHtml
+      );
+
+      return res.redirect(`${process.env.CLIENT_URL}/ride-requests?message=Booking rejected successfully`);
+    }
+
+    res.redirect(`${process.env.CLIENT_URL}/dashboard`);
+  } catch (err) {
+    res.redirect(`${process.env.CLIENT_URL}/dashboard?error=${encodeURIComponent(err.message)}`);
   }
 };

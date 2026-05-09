@@ -5,13 +5,17 @@ const {
   getRideBookings,
   approveBooking,
   rejectBooking,
-  cancelBooking
+  cancelBooking,
+  directAction
 } = require('../controllers/bookingController');
 
 const router = express.Router();
 const { protect } = require('../middleware/authMiddleware');
 
-router.use(protect); // All booking routes are protected
+// Public routes (accessible from email links)
+router.get('/:id/direct-action', directAction);
+
+router.use(protect); // Remaining booking routes are protected
 
 router.route('/')
   .post(createBooking);

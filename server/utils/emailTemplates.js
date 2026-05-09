@@ -14,59 +14,86 @@ const bookingConfirmationEmail = (passengerName, driverName, rideDetails) => {
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; }
-        .container { max-width: 600px; margin: 0 auto; padding: 20px; background: #f9f9f9; border-radius: 8px; }
-        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 8px 8px 0 0; text-align: center; }
-        .header h1 { margin: 0; font-size: 28px; }
-        .content { background: white; padding: 30px; border-radius: 0 0 8px 8px; }
-        .ride-details { background: #f0f4ff; padding: 20px; border-radius: 8px; margin: 20px 0; }
-        .detail-row { display: flex; justify-content: space-between; margin: 10px 0; font-size: 16px; }
-        .detail-label { font-weight: bold; color: #667eea; }
-        .detail-value { color: #333; }
-        .footer { text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee; font-size: 14px; color: #666; }
-        .button { display: inline-block; padding: 12px 30px; background: #667eea; color: white; text-decoration: none; border-radius: 6px; margin: 20px 0; }
+        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; line-height: 1.6; color: #1f2937; margin: 0; padding: 0; background-color: #f3f4f6; }
+        .wrapper { width: 100%; table-layout: fixed; background-color: #f3f4f6; padding-bottom: 40px; }
+        .main { background-color: #ffffff; margin: 0 auto; width: 100%; max-width: 600px; border-spacing: 0; color: #1f2937; }
+        .header { background-color: #000000; padding: 40px 20px; text-align: center; }
+        .header h1 { color: #ffffff; margin: 0; font-size: 28px; font-weight: 700; }
+        .content { padding: 40px 30px; }
+        .celebration { text-align: center; margin-bottom: 30px; }
+        .celebration h2 { font-size: 24px; font-weight: 800; color: #10b981; margin: 0; }
+        .info-card { background-color: #f9fafb; border: 1px solid #e5e7eb; border-radius: 12px; padding: 24px; margin-bottom: 30px; }
+        .ride-path { position: relative; padding-left: 30px; margin: 20px 0; }
+        .ride-path::before { content: ''; position: absolute; left: 7px; top: 10px; bottom: 10px; width: 2px; background: #e5e7eb; }
+        .dot { position: absolute; left: 0; width: 16px; height: 16px; border-radius: 50%; background: #ffffff; border: 3px solid #000; z-index: 1; }
+        .dot.start { top: 0; }
+        .dot.end { bottom: 0; border-color: #10b981; }
+        .location { margin-bottom: 24px; }
+        .loc-label { font-size: 12px; text-transform: uppercase; color: #6b7280; font-weight: 600; margin-bottom: 4px; }
+        .loc-name { font-size: 16px; font-weight: 500; }
+        .stats { border-top: 1px solid #e5e7eb; padding-top: 20px; margin-top: 20px; }
+        .stat-item { margin-bottom: 12px; }
+        .stat-label { font-size: 12px; color: #6b7280; }
+        .stat-value { font-size: 15px; font-weight: 600; }
+        .footer { text-align: center; padding: 20px; color: #6b7280; font-size: 12px; }
       </style>
     </head>
     <body>
-      <div class="container">
-        <div class="header">
-          <h1>🎉 Booking Confirmed!</h1>
-        </div>
-        
-        <div class="content">
-          <p>Hi <strong>${passengerName}</strong>,</p>
-          
-          <p>Great news! Your ride booking has been approved by the driver. Here are your ride details:</p>
-          
-          <div class="ride-details">
-            <div class="detail-row">
-              <span class="detail-label">📍 From:</span>
-              <span class="detail-value">${origin}</span>
-            </div>
-            <div class="detail-row">
-              <span class="detail-label">📍 To:</span>
-              <span class="detail-value">${destination}</span>
-            </div>
-            <div class="detail-row">
-              <span class="detail-label">📅 Date:</span>
-              <span class="detail-value">${rideDate}</span>
-            </div>
-            <div class="detail-row">
-              <span class="detail-label">⏰ Time:</span>
-              <span class="detail-value">${time}</span>
-            </div>
-            <div class="detail-row">
-              <span class="detail-label">👤 Driver:</span>
-              <span class="detail-value">${driverName}</span>
-            </div>
-          </div>
-          
-          <p>Please make sure you're at the pickup location on time. Safe travels!</p>
-          
-          <div class="footer">
-            <p>&copy; 2026 RideShare PK. All rights reserved.</p>
-          </div>
-        </div>
+      <div class="wrapper">
+        <table class="main">
+          <tr>
+            <td class="header">
+              <h1>GoTogether</h1>
+            </td>
+          </tr>
+          <tr>
+            <td class="content">
+              <div class="celebration">
+                <h2>Your ride is confirmed!</h2>
+                <p>Pack your bags, ${passengerName}. Your booking was approved.</p>
+              </div>
+              
+              <div class="info-card">
+                <div class="ride-path">
+                  <div class="dot start"></div>
+                  <div class="location">
+                    <div class="loc-label">Pickup</div>
+                    <div class="loc-name">${origin}</div>
+                  </div>
+                  <div class="dot end"></div>
+                  <div class="location">
+                    <div class="loc-label">Drop-off</div>
+                    <div class="loc-name">${destination}</div>
+                  </div>
+                </div>
+                
+                <div class="stats">
+                  <div class="stat-item">
+                    <span class="stat-label">Driver:</span>
+                    <span class="stat-value">${driverName}</span>
+                  </div>
+                  <div class="stat-item">
+                    <span class="stat-label">Date:</span>
+                    <span class="stat-value">${rideDate}</span>
+                  </div>
+                  <div class="stat-item">
+                    <span class="stat-label">Time:</span>
+                    <span class="stat-value">${time}</span>
+                  </div>
+                </div>
+              </div>
+
+              <p style="text-align: center; color: #6b7280; font-size: 14px;">
+                Please be at the pickup location 5 minutes early. Have a safe journey!
+              </p>
+            </td>
+          </tr>
+          <tr>
+            <td class="footer">
+              <p>&copy; 2026 GoTogether. All rights reserved.</p>
+            </td>
+          </tr>
+        </table>
       </div>
     </body>
     </html>
