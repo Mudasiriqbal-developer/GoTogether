@@ -29,9 +29,9 @@ function Navbar() {
         : 'bg-white dark:bg-gray-900 py-5'
     }`}>
       <div className="container mx-auto px-6 flex justify-between items-center">
-        <Link to="/" className="flex items-center gap-2 group">
-          <div className="w-9 h-9 bg-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-600/20 group-hover:scale-110 transition-transform">
-             <span className="text-white font-black text-lg italic">R</span>
+        <Link to="/" className="flex items-center gap-3 group">
+          <div className="w-10 h-10 group-hover:scale-110 transition-transform duration-300">
+             <img src="/logo.svg" alt="RideToShare Logo" className="w-full h-full object-contain shadow-xl shadow-blue-600/20 rounded-xl" />
           </div>
           <span className="text-xl font-black text-gray-900 dark:text-white tracking-tighter italic">RideToShare</span>
         </Link>
