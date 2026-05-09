@@ -3,6 +3,9 @@ const jwt = require('jsonwebtoken');
 const { validationResult } = require('express-validator');
 const { sendEmailAsync } = require('../utils/emailService');
 const { registrationWelcomeEmail } = require('../utils/registrationEmailTemplate');
+const { OAuth2Client } = require('google-auth-library');
+
+const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 // Get token from model, create cookie and send response
 // const sendTokenResponse = (user, statusCode, res) => {
@@ -167,5 +170,95 @@ exports.getMe = async (req, res, next) => {
     });
   } catch (err) {
     next(err);
+  }
+};
+// @desc    Google Login
+// @route   POST /api/auth/google
+// @access  Public
+exports.googleLogin = async (req, res, next) => {
+  try {
+    const { token, isAccessToken } = req.body;
+
+    if (!token) {
+      return res.status(400).json({ success: false, error: 'Token is required' });
+    }
+
+    let name, email, googleId, picture;
+
+    if (isAccessToken) {
+      console.log('[googleLogin] Using access token flow');
+      // Fetch user info using access token
+      const response = await fetch(`https://www.googleapis.com/oauth2/v3/userinfo?access_token=${token}`);
+      const data = await response.json();
+      
+      console.log('[googleLogin] Google UserInfo Response:', data);
+
+      if (data.error || !data.sub) {
+        console.error('[googleLogin] Google UserInfo Error:', data.error || 'No sub field found');
+        throw new Error(data.error_description || 'Invalid access token');
+      }
+      
+      name = data.name;
+      email = data.email;
+      googleId = data.sub;
+      picture = data.picture;
+    } else {
+      console.log('[googleLogin] Using ID token flow');
+      // Verify Google ID Token
+      const ticket = await googleClient.verifyIdToken({
+        idToken: token,
+        audience: process.env.GOOGLE_CLIENT_ID,
+      });
+
+      const payload = ticket.getPayload();
+      console.log('[googleLogin] Google ID Token Payload:', payload);
+      name = payload.name;
+      email = payload.email;
+      googleId = payload.sub;
+      picture = payload.picture;
+    }
+
+
+    // Check if user exists with this googleId
+    let user = await User.findOne({ googleId });
+
+
+    if (!user) {
+      // Check if user exists with this email but different provider
+      user = await User.findOne({ email });
+
+      if (user) {
+        // Link Google account to existing user
+        user.googleId = googleId;
+        user.authProvider = 'google';
+        if (!user.avatar) user.avatar = picture;
+        user.isVerified = true;
+        await user.save();
+      } else {
+        // Create new user
+        user = await User.create({
+          name,
+          email,
+          googleId,
+          authProvider: 'google',
+          avatar: picture,
+          isVerified: true,
+          // phone and password are optional for google provider
+        });
+
+        // Send welcome email
+        const welcomeEmail = registrationWelcomeEmail(user.name);
+        sendEmailAsync(
+          user.email,
+          'Welcome to GoTogether! 🚗',
+          welcomeEmail
+        );
+      }
+    }
+
+    sendTokenResponse(user, 200, res);
+  } catch (err) {
+    console.error('Google Login Error:', err);
+    res.status(401).json({ success: false, error: 'Google authentication failed' });
   }
 };

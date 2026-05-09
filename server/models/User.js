@@ -18,13 +18,26 @@ const userSchema = new mongoose.Schema(
     },
     password: {
       type: String,
-      required: [true, 'Please add a password'],
+      required: function() { return this.authProvider === 'local'; },
       minlength: 6,
       select: false,
     },
     phone: {
       type: String,
-      required: [true, 'Please add a phone number'],
+      required: function() { return this.authProvider === 'local'; },
+    },
+    googleId: {
+      type: String,
+      unique: true,
+      sparse: true, // Allows multiple null values for local users
+    },
+    authProvider: {
+      type: String,
+      enum: ['local', 'google'],
+      default: 'local',
+    },
+    avatar: {
+      type: String,
     },
     role: {
       type: String,

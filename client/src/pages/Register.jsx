@@ -3,6 +3,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useAuth } from '../context/AuthContext';
 import toast from 'react-hot-toast';
+import GoogleLoginButton from '../components/auth/GoogleLoginButton';
+
 
 function Register() {
   const { register: registerForm, handleSubmit, formState: { errors }, watch, setValue } = useForm({ defaultValues: { role: 'Passenger' } });
@@ -170,6 +172,17 @@ function Register() {
               )}
             </button>
           </form>
+
+          <div className="relative my-8">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-gray-100 dark:border-gray-800"></div>
+            </div>
+            <div className="relative flex justify-center text-xs uppercase">
+              <span className="bg-white dark:bg-[#111827] px-4 text-gray-400 font-black tracking-widest">Or Register With</span>
+            </div>
+          </div>
+
+          <GoogleLoginButton text="Sign up with Google" />
 
           <div className="mt-8 text-center">
             <p className="text-sm text-gray-500 font-medium">

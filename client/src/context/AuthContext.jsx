@@ -67,6 +67,23 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  // Google Login
+  const googleLogin = async (token, isAccessToken = false) => {
+    try {
+      const res = await api.post('/auth/google', { token, isAccessToken });
+
+      localStorage.setItem('token', res.data.token);
+      setUser(res.data.user);
+      setIsAuthenticated(true);
+      return { success: true };
+    } catch (error) {
+      return { 
+        success: false, 
+        error: error.response?.data?.error || 'Google login failed' 
+      };
+    }
+  };
+
   // Logout User
   const logout = () => {
     localStorage.removeItem('token');
@@ -75,7 +92,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, isAuthenticated, loading, login, register, logout }}>
+    <AuthContext.Provider value={{ user, isAuthenticated, loading, login, register, googleLogin, logout }}>
       {children}
     </AuthContext.Provider>
   );
