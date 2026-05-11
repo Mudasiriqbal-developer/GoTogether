@@ -34,7 +34,7 @@ function App() {
             <Navbar />
 
             {/* Main Content Area */}
-            <main className="flex-grow container mx-auto px-4 py-8">
+            <main className="flex-grow">
               <Routes>
                 {/* Public Routes */}
                 <Route path="/" element={<Home />} />

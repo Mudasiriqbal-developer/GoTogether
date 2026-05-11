@@ -18,62 +18,114 @@ function Home() {
     <div className="w-full flex flex-col items-center bg-gray-50 dark:bg-gray-900 overflow-x-hidden pb-12">
       {/* Navbar Overrides (if needed) - we'll keep the global navbar for true routing, but add page-level styling */}
       
-      {/* 1. Hero Section */}
-      <section className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-24 md:pt-20 md:pb-32 flex flex-col lg:flex-row items-center gap-12 lg:gap-8">
-        <div className="w-full lg:w-1/2 flex flex-col items-start text-left z-10">
-          <h1 className="text-5xl md:text-6xl font-extrabold tracking-tight text-gray-900 dark:text-white mb-6 leading-tight">
-            Save Fuel. Share Rides. <br className="hidden md:block"/>
-            <span className="text-blue-600">Travel Smarter.</span>
-          </h1>
-          <p className="text-lg md:text-xl text-gray-600 dark:text-gray-300 mb-10 max-w-xl">
-            Join thousands of verified commuters reducing their carbon footprint and travel costs. GoTogether makes carpooling safe, easy, and efficient for everyone.
-          </p>
-          
-          {/* Search Form */}
-          <form onSubmit={handleSearch} className="w-full bg-white dark:bg-gray-800 p-3 rounded-2xl shadow-xl flex flex-col md:flex-row gap-3 items-center border border-gray-100 dark:border-gray-700">
-            <div className="flex-1 w-full relative">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <svg className="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
-              </div>
-              <input type="text" placeholder="City or Site" className="w-full pl-10 pr-3 py-3 border border-gray-200 dark:border-gray-600 rounded-xl bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all" value={searchData.from} onChange={(e) => setSearchData({...searchData, from: e.target.value})} />
-            </div>
-            <div className="hidden md:flex items-center text-gray-300 dark:text-gray-600">
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
-            </div>
-            <div className="flex-1 w-full relative">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <svg className="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
-              </div>
-              <input type="text" placeholder="Destination" className="w-full pl-10 pr-3 py-3 border border-gray-200 dark:border-gray-600 rounded-xl bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all" value={searchData.to} onChange={(e) => setSearchData({...searchData, to: e.target.value})} />
-            </div>
-            <div className="flex-1 w-full relative">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <svg className="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
-              </div>
-              <input type="date" className="w-full pl-10 pr-3 py-3 border border-gray-200 dark:border-gray-600 rounded-xl bg-gray-50 dark:bg-gray-700 text-gray-400 focus:text-gray-900 dark:focus:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all" value={searchData.date} onChange={(e) => setSearchData({...searchData, date: e.target.value})} />
-            </div>
-            <button type="submit" className="w-full md:w-auto bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-0.5">
-              Search
-            </button>
-          </form>
+      {/* 1. Hero Section - Premium Startup Redesign */}
+      <section className="relative w-full min-h-[85vh] flex items-center justify-center overflow-hidden">
+        {/* Background Image with Overlay */}
+        <div className="absolute inset-0 z-0">
+          <img 
+            src="https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?q=80&w=2070&auto=format&fit=crop" 
+            alt="Premium Carpooling" 
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-gray-900 dark:to-black"></div>
         </div>
 
-        <div className="w-full lg:w-1/2 relative flex justify-center items-center mt-10 lg:mt-0">
-          <div className="relative w-full max-w-lg aspect-[4/3] rounded-3xl overflow-hidden shadow-2xl">
-            <img src="/images/hero_car_illustration_1778212257445.png" alt="Travel Smarter" className="w-full h-full object-cover" />
-            
-            {/* Floating Safety Badge */}
-            <div className="absolute bottom-6 left-6 bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm p-4 rounded-2xl shadow-xl flex items-center gap-4 animate-bounce-slow">
-              <div className="bg-green-100 dark:bg-green-900/30 p-2 rounded-full">
-                <svg className="w-6 h-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+        <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 flex flex-col items-center text-center">
+          {/* Trust Badge */}
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-500/10 border border-blue-400/20 backdrop-blur-md mb-8 animate-fade-in">
+            <span className="flex h-2 w-2 rounded-full bg-blue-500"></span>
+            <span className="text-sm font-medium text-blue-100 uppercase tracking-wider">Trusted by 50,000+ Commuters</span>
+          </div>
+
+          <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight text-white mb-8 leading-[1.1]">
+            Move Smarter. <br/>
+            <span className="bg-gradient-to-r from-blue-400 to-emerald-400 bg-clip-text text-transparent">Share Together.</span>
+          </h1>
+          
+          <p className="text-xl md:text-2xl text-gray-200 mb-12 max-w-2xl mx-auto leading-relaxed font-light">
+            The premium carpooling experience for modern professionals. Save fuel, reduce emissions, and enjoy the ride.
+          </p>
+          
+          {/* Search Form - Glassmorphism Card */}
+          <div className="w-full max-w-5xl bg-white/10 dark:bg-black/20 backdrop-blur-xl rounded-[2.5rem] p-4 md:p-6 shadow-2xl border border-white/20 animate-slide-up">
+            <form onSubmit={handleSearch} className="flex flex-col lg:flex-row gap-4 items-center">
+              <div className="flex-1 w-full relative group">
+                <div className="absolute inset-y-0 left-5 flex items-center pointer-events-none group-focus-within:text-blue-400 transition-colors">
+                  <svg className="h-6 w-6 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+                </div>
+                <input 
+                  type="text" 
+                  placeholder="Where from?" 
+                  className="w-full pl-14 pr-6 py-5 bg-white/10 border border-white/10 rounded-3xl text-white placeholder-gray-400 focus:bg-white/20 focus:ring-2 focus:ring-blue-500/50 focus:border-blue-400 outline-none transition-all text-lg" 
+                  value={searchData.from} 
+                  onChange={(e) => setSearchData({...searchData, from: e.target.value})} 
+                />
               </div>
-              <div>
-                <p className="text-sm font-bold text-gray-900 dark:text-white">Verified Drivers</p>
-                <p className="text-xs text-gray-500 dark:text-gray-400">Safety is our priority</p>
+
+              <div className="hidden lg:flex items-center text-white/30">
+                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
               </div>
+
+              <div className="flex-1 w-full relative group">
+                <div className="absolute inset-y-0 left-5 flex items-center pointer-events-none group-focus-within:text-emerald-400 transition-colors">
+                  <svg className="h-6 w-6 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+                </div>
+                <input 
+                  type="text" 
+                  placeholder="Where to?" 
+                  className="w-full pl-14 pr-6 py-5 bg-white/10 border border-white/10 rounded-3xl text-white placeholder-gray-400 focus:bg-white/20 focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-400 outline-none transition-all text-lg" 
+                  value={searchData.to} 
+                  onChange={(e) => setSearchData({...searchData, to: e.target.value})} 
+                />
+              </div>
+
+              <div className="w-full lg:w-48 relative group">
+                <div className="absolute inset-y-0 left-5 flex items-center pointer-events-none group-focus-within:text-blue-400 transition-colors">
+                  <svg className="h-6 w-6 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                </div>
+                <input 
+                  type="date" 
+                  className="w-full pl-14 pr-6 py-5 bg-white/10 border border-white/10 rounded-3xl text-white focus:bg-white/20 focus:ring-2 focus:ring-blue-500/50 outline-none transition-all text-lg appearance-none cursor-pointer" 
+                  value={searchData.date} 
+                  onChange={(e) => setSearchData({...searchData, date: e.target.value})} 
+                />
+              </div>
+
+              <button 
+                type="submit" 
+                className="w-full lg:w-auto bg-blue-600 hover:bg-blue-500 text-white font-bold py-5 px-10 rounded-3xl shadow-[0_0_20px_rgba(37,99,235,0.4)] hover:shadow-[0_0_30px_rgba(37,99,235,0.6)] transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] text-lg"
+              >
+                Search Rides
+              </button>
+            </form>
+          </div>
+
+          {/* Trust Indicators */}
+          <div className="mt-16 flex flex-wrap justify-center gap-8 md:gap-16">
+            <div className="flex items-center gap-3 text-gray-300 hover:text-white transition-all cursor-default group">
+              <div className="p-2.5 rounded-2xl bg-white/5 border border-white/10 group-hover:border-blue-400/50 group-hover:bg-white/10 transition-all">
+                <svg className="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+              </div>
+              <span className="font-medium tracking-wide">Verified Drivers</span>
+            </div>
+            <div className="flex items-center gap-3 text-gray-300 hover:text-white transition-all cursor-default group">
+              <div className="p-2.5 rounded-2xl bg-white/5 border border-white/10 group-hover:border-emerald-400/50 group-hover:bg-white/10 transition-all">
+                <svg className="w-6 h-6 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+              </div>
+              <span className="font-medium tracking-wide">Secure Trips</span>
+            </div>
+            <div className="flex items-center gap-3 text-gray-300 hover:text-white transition-all cursor-default group">
+              <div className="p-2.5 rounded-2xl bg-white/5 border border-white/10 group-hover:border-blue-400/50 group-hover:bg-white/10 transition-all">
+                <svg className="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+              </div>
+              <span className="font-medium tracking-wide">Save Costs</span>
             </div>
           </div>
         </div>
+
+        {/* Decorative Blur Orbs */}
+        <div className="absolute top-[20%] -left-20 w-80 h-80 bg-blue-600/20 rounded-full blur-[120px] pointer-events-none"></div>
+        <div className="absolute bottom-[20%] -right-20 w-80 h-80 bg-emerald-600/20 rounded-full blur-[120px] pointer-events-none"></div>
       </section>
 
       <section className="w-full bg-white dark:bg-gray-800 py-24">
