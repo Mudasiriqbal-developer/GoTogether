@@ -24,8 +24,7 @@ if (transporter) {
   transporter.verify((error, success) => {
     if (error) {
       console.error('⚠️  Email service error:', error.message);
-      console.log('💡 Tip: Check GMAIL_EMAIL and GMAIL_APP_PASSWORD in .env');
-    } else {
+      } else {
       console.log('✅ Email service is ready');
     }
   });
@@ -45,7 +44,6 @@ if (transporter) {
 const sendEmail = async (to, subject, htmlContent) => {
   // If email is not configured, return success without sending
   if (!transporter) {
-    console.log(`📧 Email disabled: Would send to ${to}`);
     return { success: true, skipped: true };
   }
 
@@ -56,12 +54,9 @@ const sendEmail = async (to, subject, htmlContent) => {
       subject,
       html: htmlContent,
     });
-    console.log(`✅ Email sent to ${to}:`, info.messageId);
     return { success: true, messageId: info.messageId };
   } catch (err) {
     // Log error but don't throw - API should not crash
-    console.error(`❌ Email failed for ${to}:`, err.message);
-    console.log('   API will continue - user registration/booking still succeeded');
     return { success: false, error: err.message };
   }
 };

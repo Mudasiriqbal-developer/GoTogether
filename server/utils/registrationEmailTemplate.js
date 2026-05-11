@@ -31,7 +31,7 @@ const registrationWelcomeEmail = (userName) => {
       <div class="container">
         <div class="wrapper">
           <div class="header">
-            <h1>🎉 Welcome to RideShare PK!</h1>
+            <h1> Welcome to RideShare PK!</h1>
           </div>
           
           <div class="content">

@@ -5,9 +5,7 @@ const { sendEmailAsync } = require('../utils/emailService');
 const { newBookingRequestEmail, bookingRejectionEmail, bookingCancellationEmail } = require('../utils/bookingEmailTemplate');
 const { bookingConfirmationEmail } = require('../utils/emailTemplates');
 
-// @desc    Create new booking
-// @route   POST /api/bookings
-// @access  Protected
+
 exports.createBooking = async (req, res, next) => {
   try {
     const { rideId, seatsBooked = 1 } = req.body;
@@ -47,7 +45,7 @@ exports.createBooking = async (req, res, next) => {
 
     // Send email to driver about new booking request
     const baseUrl = process.env.SERVER_URL || `http://localhost:${process.env.PORT || 5000}`;
-    const emailHtml = newBookingRequestEmail(
+    const lemailHtml = newBookingRequestEmail(
       ride.driver.name,
       passenger.name,
       { origin: ride.origin, destination: ride.destination, date: ride.date, time: ride.time },

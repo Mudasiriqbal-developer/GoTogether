@@ -1,5 +1,3 @@
-console.log('[server.js:start] Starting server initialization...');
-
 const dotenv = require('dotenv');
 const express = require('express');
 const cors = require('cors');
@@ -7,11 +5,8 @@ const helmet = require('helmet');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
-// Load env vars FIRST before importing routes
-dotenv.config();
 
-console.log('[server.js:after-dotenv] JWT_SECRET loaded:', process.env.JWT_SECRET ? 'YES' : 'NO');
-console.log('[server.js:after-dotenv] MONGO_URI loaded:', process.env.MONGO_URI ? 'YES' : 'NO');
+dotenv.config();
 
 const { errorHandler } = require('./middleware/errorHandler');
 const healthRoutes = require('./routes/health');
@@ -62,9 +57,7 @@ const connectDB = async () => {
     const conn = await mongoose.connect(process.env.MONGO_URI);
     console.log(`MongoDB Connected: ${conn.connection.host}`);
     
-    app.listen(PORT, () => {
-      console.log(`Server running in ${process.env.NODE_ENV || 'development'} mode on port ${PORT}`);
-    });
+    app.listen(PORT, () => {});
   } catch (error) {
     console.error(`Error connecting to MongoDB: ${error.message}`);
     process.exit(1);

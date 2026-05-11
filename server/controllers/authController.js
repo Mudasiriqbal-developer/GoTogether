@@ -6,42 +6,10 @@ const { registrationWelcomeEmail } = require('../utils/registrationEmailTemplate
 const { OAuth2Client } = require('google-auth-library');
 
 const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
-
-// Get token from model, create cookie and send response
-// const sendTokenResponse = (user, statusCode, res) => {
-//   // Create token
-//   const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-//     expiresIn: '30d',
-//   });
-
-//   res.status(statusCode).json({
-//     success: true,
-//     token,
-//     user: {
-//       _id: user._id,
-//       name: user.name,
-//       email: user.email,
-//       phone: user.phone,
-//       role: user.role,
-//       profilePhoto: user.profilePhoto,
-//       avgRating: user.avgRating,
-//       isVerified: user.isVerified
-//     }
-//   });
-// };
-
-// @desc    Register user
-// @route   POST /api/auth/register
-// @access  Public
-
 const sendTokenResponse = (user, statusCode, res) => {
   const jwtSecret = process.env.JWT_SECRET;
-  console.log('[sendTokenResponse] JWT_SECRET value:', jwtSecret);
-  console.log('[sendTokenResponse] JWT_SECRET is empty?:', !jwtSecret);
-  console.log('[sendTokenResponse] Process env keys:', Object.keys(process.env).filter(k => k.includes('JWT') || k.includes('MONGO') || k.includes('PORT')));
   
   if (!jwtSecret) {
-    console.error('[sendTokenResponse] CRITICAL: JWT_SECRET is not configured');
     return res.status(500).json({
       success: false,
       error: "JWT_SECRET is not configured"
@@ -50,7 +18,7 @@ const sendTokenResponse = (user, statusCode, res) => {
 
   try {
     const token = jwt.sign({ id: user._id }, jwtSecret, {
-      expiresIn: '30d',
+      expiresIn: '15d',
     });
 
     res.status(statusCode).json({
@@ -68,7 +36,6 @@ const sendTokenResponse = (user, statusCode, res) => {
       }
     });
   } catch (error) {
-    console.error('[sendTokenResponse] Error signing JWT:', error.message);
     res.status(500).json({
       success: false,
       error: error.message
@@ -107,7 +74,7 @@ exports.registerUser = async (req, res, next) => {
     const welcomeEmail = registrationWelcomeEmail(user.name);
     sendEmailAsync(
       user.email,
-      'Welcome to RideShare PK! 🚗',
+      'Welcome to RideShare PK!',
       welcomeEmail
     );
 
@@ -118,9 +85,7 @@ exports.registerUser = async (req, res, next) => {
   }
 };
 
-// @desc    Login user
-// @route   POST /api/auth/login
-// @access  Public
+
 exports.loginUser = async (req, res, next) => {
   try {
     // Check validation errors
@@ -156,9 +121,7 @@ exports.loginUser = async (req, res, next) => {
   }
 };
 
-// @desc    Get current logged in user
-// @route   GET /api/auth/me
-// @access  Private
+
 exports.getMe = async (req, res, next) => {
   try {
     // user is already available in req due to the protect middleware
@@ -172,9 +135,7 @@ exports.getMe = async (req, res, next) => {
     next(err);
   }
 };
-// @desc    Google Login
-// @route   POST /api/auth/google
-// @access  Public
+
 exports.googleLogin = async (req, res, next) => {
   try {
     const { token, isAccessToken } = req.body;
@@ -186,12 +147,9 @@ exports.googleLogin = async (req, res, next) => {
     let name, email, googleId, picture;
 
     if (isAccessToken) {
-      console.log('[googleLogin] Using access token flow');
       // Fetch user info using access token
       const response = await fetch(`https://www.googleapis.com/oauth2/v3/userinfo?access_token=${token}`);
       const data = await response.json();
-      
-      console.log('[googleLogin] Google UserInfo Response:', data);
 
       if (data.error || !data.sub) {
         console.error('[googleLogin] Google UserInfo Error:', data.error || 'No sub field found');
@@ -203,7 +161,6 @@ exports.googleLogin = async (req, res, next) => {
       googleId = data.sub;
       picture = data.picture;
     } else {
-      console.log('[googleLogin] Using ID token flow');
       // Verify Google ID Token
       const ticket = await googleClient.verifyIdToken({
         idToken: token,
@@ -211,7 +168,6 @@ exports.googleLogin = async (req, res, next) => {
       });
 
       const payload = ticket.getPayload();
-      console.log('[googleLogin] Google ID Token Payload:', payload);
       name = payload.name;
       email = payload.email;
       googleId = payload.sub;
@@ -250,7 +206,7 @@ exports.googleLogin = async (req, res, next) => {
         const welcomeEmail = registrationWelcomeEmail(user.name);
         sendEmailAsync(
           user.email,
-          'Welcome to GoTogether! 🚗',
+          'Welcome to GoTogether!',
           welcomeEmail
         );
       }

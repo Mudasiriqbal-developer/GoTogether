@@ -24,25 +24,19 @@ const options = {
   }
 };
 
-console.log(`Testing Registration with email: ${testEmail}\n`);
-
 const req = http.request(options, (res) => {
   let data = '';
-
-  console.log(`Register Response Status: ${res.statusCode}`);
 
   res.on('data', (chunk) => {
     data += chunk;
   });
 
   res.on('end', () => {
-    console.log('Response Body:');
     try {
       const jsonData = JSON.parse(data);
-      console.log(JSON.stringify(jsonData, null, 2));
       
       if (jsonData.token) {
-        console.log('\n✅ SUCCESS! JWT Token Generated!');
+        console.log('\n SUCCESS! JWT Token Generated!');
         console.log(`User ID: ${jsonData.user._id}`);
         console.log(`User Name: ${jsonData.user.name}`);
         console.log(`User Email: ${jsonData.user.email}`);
@@ -54,7 +48,7 @@ const req = http.request(options, (res) => {
         console.log('========================================\n');
         testLogin(testEmail);
       } else if (jsonData.error) {
-        console.log(`\n❌ Error: ${jsonData.error}`);
+        console.log(`\n Error: ${jsonData.error}`);
       }
     } catch (e) {
       console.log('Error parsing response:', e.message);
@@ -98,23 +92,22 @@ function testLogin(email) {
     });
 
     res.on('end', () => {
-      console.log('Response Body:');
       try {
         const jsonData = JSON.parse(data);
         console.log(JSON.stringify(jsonData, null, 2));
         
         if (jsonData.token) {
-          console.log('\n✅ SUCCESS! Login Successful!');
+          console.log('\n SUCCESS! Login Successful!');
           console.log(`User Email: ${jsonData.user.email}`);
           console.log(`Token (first 50 chars): ${jsonData.token.substring(0, 50)}...`);
           console.log('\n\n========================================');
-          console.log('✅ ALL TESTS PASSED!');
+          console.log('ALL TESTS PASSED!');
           console.log('========================================');
           console.log('✓ Register API working - JWT token generated');
           console.log('✓ Login API working - JWT token generated');
           console.log('✓ Email configuration is optional and not blocking API');
         } else if (jsonData.error) {
-          console.log(`\n❌ Login Error: ${jsonData.error}`);
+          console.log(`\n Login Error: ${jsonData.error}`);
         }
       } catch (e) {
         console.log('Error parsing response:', e.message);
