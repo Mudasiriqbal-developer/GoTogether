@@ -1,6 +1,6 @@
-# RideShare PK - Backend API
+# GoTogether - Backend API
 
-A robust Node.js/Express REST API server for the RideShare PK carpooling platform. Features authentication, ride management, bookings, ratings, and email notifications.
+A robust Node.js/Express REST API server for the GoTogether carpooling platform. Features authentication, ride management, bookings, ratings, and email notifications.
 
 ## 🚀 Quick Start
 

@@ -32,9 +32,9 @@ function Navbar() {
       <div className="container mx-auto px-6 flex justify-between items-center">
         <Link to="/" className="flex items-center gap-3 group">
           <div className="w-10 h-10 group-hover:scale-110 transition-transform duration-300">
-             <img src="/logo.svg" alt="RideToShare Logo" className="w-full h-full object-contain shadow-xl shadow-blue-600/20 rounded-xl" />
+             <img src="/logo.svg" alt="GoTogether Logo" className="w-full h-full object-contain" />
           </div>
-          <span className="text-xl font-black text-gray-900 dark:text-white tracking-tighter italic">RideToShare</span>
+          <span className="text-xl font-black text-gray-900 dark:text-white tracking-tighter italic">GoTogether</span>
         </Link>
         
         {/* Desktop Menu */}

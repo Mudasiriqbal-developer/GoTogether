@@ -9,12 +9,12 @@ function Footer() {
           <div className="lg:col-span-1">
             <Link to="/" className="flex items-center gap-3 mb-6 group">
               <div className="w-10 h-10 group-hover:scale-110 transition-transform duration-300">
-                 <img src="/logo.svg" alt="RideToShare Logo" className="w-full h-full object-contain shadow-xl shadow-blue-600/20 rounded-xl" />
+                 <img src="/logo.svg" alt="GoTogether Logo" className="w-full h-full object-contain" />
               </div>
-              <span className="text-xl font-black text-gray-900 dark:text-white tracking-tighter italic">RideToShare</span>
+              <span className="text-xl font-black text-gray-900 dark:text-white tracking-tighter italic">GoTogether</span>
             </Link>
             <p className="text-gray-500 dark:text-gray-400 text-sm leading-relaxed mb-6">
-              Empowering the world to share journeys. Reduce costs, meet new people, and travel sustainably with Peshawar's leading carpooling platform.
+              Empowering the world to share journeys. Reduce costs, meet new people, and travel sustainably with the leading carpooling platform.
             </p>
             <div className="flex gap-3">
                <SocialLink icon="fb" />
@@ -61,7 +61,7 @@ function Footer() {
         
         <div className="pt-10 border-t border-gray-50 dark:border-gray-800 flex flex-col md:flex-row justify-between items-center gap-6">
           <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">
-            &copy; {new Date().getFullYear()} RideToShare Platform • Peshawar, PK
+            &copy; {new Date().getFullYear()} GoTogether Platform
           </p>
           <div className="flex gap-8">
             <Link to="/terms" className="text-[10px] font-black text-gray-400 hover:text-blue-600 uppercase tracking-widest transition-colors">Terms</Link>

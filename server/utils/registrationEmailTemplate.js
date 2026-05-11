@@ -31,13 +31,13 @@ const registrationWelcomeEmail = (userName) => {
       <div class="container">
         <div class="wrapper">
           <div class="header">
-            <h1> Welcome to RideShare PK!</h1>
+            <h1> Welcome to GoTogether!</h1>
           </div>
           
           <div class="content">
             <h2>Hello ${userName},</h2>
             
-            <p>Thank you for joining RideShare PK! We're excited to have you on board.</p>
+            <p>Thank you for joining GoTogether! We're excited to have you on board.</p>
             
             <p>Whether you're looking to <strong>share a ride, earn money</strong>, or <strong>save on transportation costs</strong>, you're in the right place.</p>
             
@@ -75,18 +75,18 @@ const registrationWelcomeEmail = (userName) => {
             </div>
             
             <h3>Safety & Trust:</h3>
-            <p>At RideShare PK, safety is our priority. All users go through a verification process, and you can rate your experience with every ride. If you ever feel unsafe, you can report the user or ride.</p>
+            <p>At GoTogether, safety is our priority. All users go through a verification process, and you can rate your experience with every ride. If you ever feel unsafe, you can report the user or ride.</p>
             
             <h3>Have Questions?</h3>
             <p>Check out our <a href="${process.env.CLIENT_URL}/help" style="color: #667eea; text-decoration: none;">Help Center</a> or reply to this email. Our support team is here to help!</p>
             
             <p>Happy riding! 🚗💨</p>
             
-            <p><strong>The RideShare PK Team</strong></p>
+            <p><strong>The GoTogether Team</strong></p>
           </div>
           
           <div class="footer">
-            <p>&copy; 2026 RideShare PK. All rights reserved.</p>
+            <p>&copy; 2026 GoTogether. All rights reserved.</p>
             <p>Made with ❤️ in Pakistan</p>
             <div class="social">
               <a href="https://facebook.com/gotogether" class="social-link">Facebook</a>

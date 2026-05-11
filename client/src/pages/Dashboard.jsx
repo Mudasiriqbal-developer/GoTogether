@@ -60,7 +60,7 @@ function Dashboard() {
                    <p className="text-xs font-bold text-gray-400 uppercase tracking-[0.2em]">{user?.role} Account</p>
                 </div>
               </div>
-              <p className="text-gray-500 font-medium max-w-lg">Manage your rides, track your earnings, and explore new journeys in Peshawar.</p>
+              <p className="text-gray-500 font-medium max-w-lg">Manage your rides, track your earnings, and explore new journeys.</p>
             </div>
             <div className="flex gap-4">
                <button 

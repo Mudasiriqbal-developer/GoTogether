@@ -26,7 +26,7 @@ function Home() {
             <span className="text-blue-600">Travel Smarter.</span>
           </h1>
           <p className="text-lg md:text-xl text-gray-600 dark:text-gray-300 mb-10 max-w-xl">
-            Join thousands of verified commuters reducing their carbon footprint and travel costs. RideToShare makes carpooling safe, easy, and efficient for everyone.
+            Join thousands of verified commuters reducing their carbon footprint and travel costs. GoTogether makes carpooling safe, easy, and efficient for everyone.
           </p>
           
           {/* Search Form */}
@@ -76,11 +76,10 @@ function Home() {
         </div>
       </section>
 
-      {/* 2. Why choose RideToShare */}
       <section className="w-full bg-white dark:bg-gray-800 py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">Why choose RideToShare</h2>
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">Why choose GoTogether</h2>
             <p className="text-lg text-gray-600 dark:text-gray-300">The smarter way to navigate your daily commute.</p>
           </div>
 

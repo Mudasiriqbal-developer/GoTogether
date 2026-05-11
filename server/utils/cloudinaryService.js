@@ -30,7 +30,7 @@ const uploadToCloudinary = async (fileBuffer, fileName) => {
     const stream = cloudinary.uploader.upload_stream(
       {
         resource_type: 'auto',
-        public_id: `rideshare_pk/${fileName}`,
+        public_id: `gotogether/${fileName}`,
         overwrite: true,
       },
       (error, result) => {

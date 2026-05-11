@@ -45,7 +45,7 @@ exports.createBooking = async (req, res, next) => {
 
     // Send email to driver about new booking request
     const baseUrl = process.env.SERVER_URL || `http://localhost:${process.env.PORT || 5000}`;
-    const lemailHtml = newBookingRequestEmail(
+    const emailHtml = newBookingRequestEmail(
       ride.driver.name,
       passenger.name,
       { origin: ride.origin, destination: ride.destination, date: ride.date, time: ride.time },

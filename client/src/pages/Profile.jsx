@@ -162,7 +162,7 @@ function Profile() {
                     <span>Member since {new Date(user.createdAt).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}</span>
                   </div>
                   <p className="text-gray-600 dark:text-gray-300 max-w-xl text-sm leading-relaxed">
-                    Regular commuter between Peshawar and Islamabad. I enjoy acoustic playlists and great conversations about tech and urban planning.
+                    Enjoying sharing journeys and great conversations about tech and urban planning.
                   </p>
                 </div>
 
@@ -209,7 +209,7 @@ function Profile() {
                   </div>
                   <div>
                     <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">Location</label>
-                    <p className="text-gray-900 dark:text-white font-medium">Peshawar, PK</p>
+                    <p className="text-gray-900 dark:text-white font-medium">Pakistan</p>
                   </div>
                 </div>
               </div>

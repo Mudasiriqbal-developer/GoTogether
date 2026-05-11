@@ -74,7 +74,7 @@ exports.registerUser = async (req, res, next) => {
     const welcomeEmail = registrationWelcomeEmail(user.name);
     sendEmailAsync(
       user.email,
-      'Welcome to RideShare PK!',
+      'Welcome to GoTogether!',
       welcomeEmail
     );
 

@@ -1,6 +1,6 @@
-# RideShare PK - Frontend
+# GoTogether - Frontend
 
-A modern React/Vite application for the RideShare PK carpooling platform. Built with Tailwind CSS and featuring responsive design, dark mode support, and real-time notifications.
+A modern React/Vite application for the GoTogether carpooling platform. Built with Tailwind CSS and featuring responsive design, dark mode support, and real-time notifications.
 
 ## 🚀 Quick Start
 
